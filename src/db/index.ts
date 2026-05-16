@@ -1,11 +1,10 @@
-import "dotenv/config";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg"; // creates reusable DB connections
-// every request opens new connection
-// performance dies
+import postgres from "postgres";
+// db/index.ts
+import { drizzle } from "drizzle-orm/postgres-js";
+import * as schema from "./schema";
 
-const pool = new Pool({ 
-  connectionString: process.env.DATABASE_URL,
-});
+const connectionString = process.env.DATABASE_URL!;
 
-export const db = drizzle(pool);
+// Disable prefetch as it is not supported for "Transaction" pool mode
+const client = postgres(connectionString, { prepare: false });
+export const db = drizzle(client, { schema });

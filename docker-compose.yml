@@ -1,18 +1,31 @@
+version: '3.8'
+
 services:
   postgres:
-    image: pgvector/pgvector:pg17
-    container_name: ai-rag-db
-
+    image: pgvector/pgvector:pg16
+    container_name: adaptive_postgres
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ai_rag_saas
-
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: adaptive_db
     ports:
       - "5432:5432"
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  neo4j:
+    image: neo4j:5
+    container_name: adaptive_graph
+    restart: always
+    environment:
+      NEO4J_AUTH: neo4j/graphpassword
+    ports:
+      - "7474:7474" # HTTP Browser UI
+      - "7687:7687" # Bolt Protocol for Next.js integration
+    volumes:
+      - neo4j_data:/data
+
 volumes:
   postgres_data:
+  neo4j_data:
