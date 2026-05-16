@@ -6,3 +6,7 @@ const driver = neo4j.driver(
 );
 
 export default driver;
+
+// Vectorization (PostgreSQL): Convert the text into a 768-dimensional array of numbers (an embedding) so the AI can perform semantic similarity searches.
+
+// Entity Extraction (Neo4j): Ask Gemini to read the text, figure out the core concepts, and map how they connect to each other (e.g., "Recursion" -> IS_PREREQUISITE_FOR -> "Dynamic Programming").
